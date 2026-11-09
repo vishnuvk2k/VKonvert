@@ -9,7 +9,7 @@ import json
 import os
 from datetime import date
 
-SITE = os.environ.get("VK_SITE", "https://vkonvert.vercel.app")
+SITE = os.environ.get("VK_SITE", "https://vkonvert-app.vercel.app")
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public")
 GITHUB = "https://github.com/vishnuvk2k/VKonvert"
 SETUP = GITHUB + "/raw/main/download/VKonvert-Setup-2.0.exe"

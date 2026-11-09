@@ -18,6 +18,8 @@ Pick one (direct downloads):
 - ⬇ [**VKonvert-Setup-2.0.exe**](https://github.com/vishnuvk2k/VKonvert/raw/main/download/VKonvert-Setup-2.0.exe) · installer · 15.8 MB
 - ⬇ [**VKonvert-2.0-Portable.zip**](https://github.com/vishnuvk2k/VKonvert/raw/main/download/VKonvert-2.0-Portable.zip) · portable · 15.6 MB
 
+Or use it in your browser: **https://vkonvert-app.vercel.app**
+
 Which one?
 
 - **VKonvert-Setup-2.0.exe** (installer, recommended). Setup asks you to accept the license, lets you choose the install folder and options, and needs no admin rights. VKonvert then appears in the Start menu, the right-click menu and **Settings › Apps**, where you can uninstall it any time.
