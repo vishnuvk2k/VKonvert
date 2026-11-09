@@ -11,9 +11,14 @@ Made by Vishnu VK · Made with Claude Code · MIT License</p>
 
 VKonvert is a free Windows app for everyday picture and PDF jobs. Files come in on the left, you pick what to do in the middle, and the finished files land on the right. Everything happens on your PC: nothing is uploaded.
 
-## Download
+## Download (Windows 10 and 11, 64-bit)
 
-Get **VKonvert-Setup-2.0.exe** from the [Releases](../../releases) page and run it. Setup asks you to accept the license, lets you choose the install folder and options, and needs no admin rights. VKonvert then appears in the Start menu and in **Settings › Apps**, where you can uninstall it any time.
+From the [latest release](../../releases/latest), pick one:
+
+- **VKonvert-Setup-2.0.exe** (installer, recommended). Setup asks you to accept the license, lets you choose the install folder and options, and needs no admin rights. VKonvert then appears in the Start menu, the right-click menu and **Settings › Apps**, where you can uninstall it any time.
+- **VKonvert-2.0-Portable.zip** (no install). Unzip anywhere, even a USB stick, and run `VKonvert.exe`. It doesn't add shortcuts or the right-click menu; to remove it, delete the folder.
+
+A Mac version is planned.
 
 Windows may show "Windows protected your PC" because the app isn't code-signed yet. Click **More info › Run anyway**.
 

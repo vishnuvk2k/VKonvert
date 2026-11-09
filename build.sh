@@ -34,4 +34,13 @@ PY
 
 "$DOTNET" build setup/VKonvertSetup.csproj -c Release -nologo -v q
 cp setup/bin/Release/net48/VKonvert-Setup.exe "dist/VKonvert-Setup-$VER.exe"
-ls -la "dist/VKonvert-Setup-$VER.exe"
+
+# Portable: the same app in a ZIP. Unzip anywhere (even a USB stick) and run VKonvert.exe; nothing is installed.
+python3 -I - dist "VKonvert" "dist/VKonvert-$VER-Portable.zip" <<'PY'
+import sys, zipfile, os
+root, folder, out = sys.argv[1], sys.argv[2], sys.argv[3]
+with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
+    for name in sorted(os.listdir(os.path.join(root, folder))):
+        z.write(os.path.join(root, folder, name), folder + "/" + name)
+PY
+ls -la "dist/VKonvert-Setup-$VER.exe" "dist/VKonvert-$VER-Portable.zip"
