@@ -11,6 +11,10 @@ INSTALL
 3. Click Finish. VKonvert is in the Start menu and in Settings > Apps.
    To update later, run a newer VKonvert-Setup over it.
 
+PORTABLE VERSION
+  Using VKonvert-2.0-Portable.zip? Unzip it anywhere and run VKonvert.exe.
+  Nothing is installed: no shortcuts, no right-click menu. Delete the folder to remove it.
+
 THE TOOLS
   Pictures:  Convert · Compress · Resize · Remove photo info
   PDF:       Images to PDF · Merge · Split · Compress · PDF to images ·
