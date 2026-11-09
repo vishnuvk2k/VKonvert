@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>VKonvert-Setup</AssemblyName>
+    <RootNamespace>VKonvertSetup</RootNamespace>
+    <ApplicationIcon>../app/Assets/app.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <PlatformTarget>x64</PlatformTarget>
+    <Version>2.0.0</Version>
+    <Product>VKonvert Setup</Product>
+    <Company>Vishnu VK</Company>
+    <Copyright>Copyright (c) 2026 Vishnu VK</Copyright>
+    <Description>VKonvert Setup</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- The installer shares the app's look: same theme, controls and brand font. -->
+    <Compile Include="../app/UI/Theme.cs" Link="UI/Theme.cs" />
+    <Compile Include="../app/UI/Controls.cs" Link="UI/Controls.cs" />
+    <Compile Include="../app/UI/FileList.cs" Link="UI/FileList.cs" />
+    <EmbeddedResource Include="../app/Assets/Bricolage-ExtraBold.ttf" LogicalName="brand.ttf" />
+    <EmbeddedResource Include="payload.zip" LogicalName="payload.zip" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+</Project>
