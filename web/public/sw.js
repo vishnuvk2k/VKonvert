@@ -1,6 +1,6 @@
 // Keeps VKonvert working offline: pages and tools are cached the first time they're used.
 const CACHE = "vk-2.0-2026-11-09";
-const CORE = ["/", "/convert-image", "/heic-to-jpg", "/png-to-jpg", "/jpg-to-png", "/webp-to-jpg", "/jpg-to-webp", "/compress-image", "/resize-image", "/remove-photo-info", "/jpg-to-pdf", "/merge-pdf", "/split-pdf", "/compress-pdf", "/pdf-to-jpg", "/rotate-pdf", "/download", "/privacy", "/assets/vk.css", "/assets/vk.js", "/assets/favicon-32.png", "/assets/icon-192.png"];
+const CORE = ["/", "/convert-image", "/heic-to-jpg", "/png-to-jpg", "/jpg-to-png", "/webp-to-jpg", "/jpg-to-webp", "/compress-image", "/resize-image", "/remove-photo-info", "/jpg-to-pdf", "/merge-pdf", "/split-pdf", "/compress-pdf", "/pdf-to-jpg", "/rotate-pdf", "/compress-image-to-20kb", "/compress-image-to-50kb", "/compress-image-to-100kb", "/compress-image-to-200kb", "/passport-size-photo", "/heic-to-png", "/pdf-to-png", "/download", "/privacy", "/assets/vk.css", "/assets/vk.js", "/assets/favicon-32.png", "/assets/icon-192.png"];
 self.addEventListener("install", e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting())));
 self.addEventListener("activate", e => e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())));
 self.addEventListener("fetch", e => {

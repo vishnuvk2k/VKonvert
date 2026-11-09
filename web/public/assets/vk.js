@@ -346,13 +346,13 @@ const TOOLS = {
 
   compress: {
     accept: "image",
-    init() { this.mode = "size"; this.kb = 500; this.q = 70; this.strip = true; },
+    init(o) { this.mode = "size"; this.kb = +o.kb || 500; this.q = 70; this.strip = true; },
     build(core, ctx) {
       const mode = keys(["Size limit", "Quality"], 2, i => { this.mode = i ? "quality" : "size"; refresh(); ctx.changed(); }, 0);
       const t = title("Each picture under");
       const sizes = [50, 100, 200, 500, 1024];
-      const k = keys(["50 KB", "100 KB", "200 KB", "500 KB", "1 MB"], 5, i => { this.kb = sizes[i]; custom.input.value = ""; ctx.changed(); }, 3);
-      const custom = field("", "Custom size in KB", "KB", { inputmode: "numeric", placeholder: "Or type a size" });
+      const k = keys(["50 KB", "100 KB", "200 KB", "500 KB", "1 MB"], 5, i => { this.kb = sizes[i]; custom.input.value = ""; ctx.changed(); }, sizes.indexOf(this.kb));
+      const custom = field(sizes.includes(this.kb) ? "" : String(this.kb), "Custom size in KB", "KB", { inputmode: "numeric", placeholder: "Or type a size" });
       custom.input.addEventListener("input", () => { const v = parseInt(custom.input.value, 10); if (v > 0) { this.kb = v; k.select(-1); } ctx.changed(); });
       const q = qualityCard(this.q, v => { this.q = v; ctx.changed(); });
       const refresh = () => { const s = this.mode === "size"; t.hidden = k.hidden = custom.hidden = !s; q.hidden = s; };
@@ -405,7 +405,7 @@ const TOOLS = {
 
   resize: {
     accept: "image",
-    init() { this.pick(2); this.grow = false; },
+    init(o) { this.start = o.preset === "passport" ? 7 : o.preset === "square" ? 6 : 2; this.pick(this.start); this.grow = false; },
     pick(i) {
       const L = [1080, 1280, 1920, 3840];
       if (i < 4) Object.assign(this, { mode: "long", px: L[i], label: L[i] + "px" });
@@ -414,7 +414,7 @@ const TOOLS = {
       else Object.assign(this, { mode: "exact", w: 413, hh: 531, label: "passport" }); // 35 × 45 mm at 300 dpi
     },
     build(core, ctx) {
-      const k = keys(["1080 px", "1280 px", "1920 px", "3840 px", "75%", "50%", "Square 1080", "Passport"], 4, i => { this.pick(i); custom.input.value = ""; ctx.changed(); }, 2);
+      const k = keys(["1080 px", "1280 px", "1920 px", "3840 px", "75%", "50%", "Square 1080", "Passport"], 4, i => { this.pick(i); custom.input.value = ""; ctx.changed(); }, this.start);
       const custom = field("", "Long side in pixels", "px", { inputmode: "numeric", placeholder: "Or type a long side" });
       custom.input.addEventListener("input", () => { const v = parseInt(custom.input.value, 10); if (v >= 16 && v <= 20000) { Object.assign(this, { mode: "long", px: v, label: v + "px" }); k.select(-1); } ctx.changed(); });
       core.append(k, custom, toggle("Don’t make small pictures bigger", true, v => this.grow = !v),
@@ -654,9 +654,9 @@ const TOOLS = {
 
   pdftojpg: {
     accept: "pdf",
-    init() { this.png = false; this.dpi = 150; },
+    init(o) { this.png = o.format === "png"; this.dpi = 150; },
     build(core, ctx) {
-      core.append(keys(["JPG", "PNG"], 2, i => { this.png = i === 1; ctx.changed(); }, 0), title("Sharpness"),
+      core.append(keys(["JPG", "PNG"], 2, i => { this.png = i === 1; ctx.changed(); }, this.png ? 1 : 0), title("Sharpness"),
         keys(["Screen · 96 dpi", "Standard · 150 dpi", "Print · 300 dpi"], 3, i => this.dpi = [96, 150, 300][i], 1),
         h("p", { class: "hint" }, "Each page becomes one picture. Use “Download all” to get them in one ZIP."));
     },
@@ -749,7 +749,7 @@ const TOOLS = {
 
 // ───────────── The machine ─────────────
 const tool = TOOLS[mount.dataset.tool];
-tool.init({ target: mount.dataset.target });
+tool.init(Object.assign({}, mount.dataset));
 const files = [], outputs = [];
 let busy = false, saved = 0;
 

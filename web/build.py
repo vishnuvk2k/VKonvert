@@ -89,7 +89,7 @@ PAGES = [
                ("Will it still look good?", "Most photos look the same down to quality 70–75. Very small limits make photos softer."),
                ("What if my file is already small?", "VKonvert never gives you a bigger file. If it can’t shrink it, you get the original back."),
                ("Are photos uploaded?", "No. Everything happens on your device.")],
-         related=["resize-image", "heic-to-jpg", "compress-pdf", "remove-photo-info"]),
+         related=["compress-image-to-20kb", "compress-image-to-50kb", "compress-image-to-100kb", "compress-image-to-200kb", "resize-image", "compress-pdf"]),
     dict(slug="resize-image", tool="resize", name="Resize image", ex="4000→1080", tile="By pixels, percent, square post or passport photo.",
          title="Resize Image Online Free: Pixels, Percent, Passport | VKonvert",
          desc="Resize photos to 1080 px, 1920 px, 50%, a square post or a passport photo (35×45 mm). Free, in your browser, no upload.",
@@ -98,7 +98,7 @@ PAGES = [
          steps=[("Add pictures", "Drop them or tap Choose pictures."), ("Pick a size", "1080 px for Instagram, 1920 px for HD, 50%, Square or Passport, or type your own."), ("Save", "Save each picture or all as a ZIP.")],
          faqs=[("What size is a passport photo?", "VKonvert makes 35 × 45 mm at 300 dpi (413 × 531 pixels), cropped from the centre. Check your country’s rules for the face size."),
                ("Will small pictures be stretched?", "No. Small pictures stay as they are unless you turn that off.")],
-         related=["compress-image", "convert-image", "jpg-to-pdf", "remove-photo-info"]),
+         related=["passport-size-photo", "compress-image", "convert-image", "jpg-to-pdf"]),
     dict(slug="remove-photo-info", tool="removeinfo", name="Remove photo info", ex="GPS ✕", tile="Delete location and camera details before sharing.",
          title="Remove Photo Location and EXIF Data, Free | VKonvert",
          desc="Remove GPS location, camera model, date and other hidden EXIF data from photos before you share them. In your browser, no upload.",
@@ -159,6 +159,64 @@ PAGES = [
          steps=[("Add a PDF", "Drop it or tap Choose PDFs; its pages show up."), ("Pick pages and fix them", "Turn left or right, move earlier or later, or delete."), ("Save", "Tap Save the new PDF.")],
          faqs=[("Does rotating reduce quality?", "No. The pages are turned, not redrawn."), ("Can I select several pages?", "Yes. Tap each page you want, or use Select all.")],
          related=["split-pdf", "merge-pdf", "compress-pdf", "pdf-to-jpg"]),
+]
+
+def size_page(kb, why, extra_faq):
+    """Pages for "compress image to 20 KB" style searches; the tool opens with that size picked."""
+    label = f"{kb} KB"
+    return dict(
+        slug=f"compress-image-to-{kb}kb", tool="compress", data={"kb": kb}, name=f"Compress image to {label}", ex=f"→ {label}",
+        tile=f"Get a photo under {label} for forms and uploads.",
+        title=f"Compress Image to {label} Online, Free (JPG, PNG) | VKonvert",
+        desc=f"Reduce a photo to under {label} in seconds: JPG, PNG, WebP and iPhone HEIC. Keeps the best quality that fits. Free, in your browser, no upload.",
+        h1=f"Compress image to {label}",
+        lead=f"{why} Drop the photo, and VKonvert finds the best quality that fits under {label}. Nothing is uploaded.",
+        steps=[("Add your photo", "Drop it here or tap Choose pictures. JPG, PNG, WebP and HEIC all work."),
+               (f"Keep {label} selected", f"It’s already set to {label}. Need a different limit? Type it in the box."),
+               ("Save", f"Your photo is now under {label}. Check the size shown before you upload it.")],
+        faqs=[(f"How do I reduce a photo to {label}?", f"Add the photo here with {label} selected and press Compress. VKonvert lowers the quality step by step, and only if that isn’t enough, makes the picture slightly smaller in size, until it fits under {label}."),
+              ("Will my photo still look clear?", "VKonvert always uses the highest quality that fits, so faces and text stay as clear as the size limit allows."),
+              ] + extra_faq + [("Is my photo uploaded anywhere?", "No. The photo is compressed on your own phone or computer and never leaves it.")],
+        related=[r for r in ["compress-image-to-20kb", "compress-image-to-50kb", "compress-image-to-100kb", "compress-image-to-200kb"] if r != f"compress-image-to-{kb}kb"] + ["passport-size-photo"],
+    )
+
+
+PAGES += [
+    size_page(20, "Many exam and job application forms ask for a signature or photo under 20 KB.",
+              [("Can I compress a signature to 20 KB?", "Yes. Scan or photograph the signature on white paper, crop it, then compress it here. Signatures usually fit easily.")]),
+    size_page(50, "Application forms, ID uploads and many government websites ask for photos under 50 KB.",
+              [("My form says 20–50 KB. What should I pick?", "Pick 50 KB. VKonvert gets as close under the limit as it can, which keeps the photo clearest.")]),
+    size_page(100, "Many websites, forms and email limits ask for pictures under 100 KB.",
+              [("Can I do many photos at once?", "Yes. Add them all; each one is compressed to under 100 KB, and Download all gives you a ZIP.")]),
+    size_page(200, "A good size for sharing, websites and most upload forms, with photos that still look sharp.",
+              [("Is 200 KB enough for a good photo?", "Yes, for screens. A typical phone photo at 200 KB still looks sharp on phones and laptops.")]),
+    dict(slug="passport-size-photo", tool="resize", data={"preset": "passport"}, name="Passport size photo", ex="35×45 mm",
+         tile="Crop and resize a photo to passport size.",
+         title="Passport Size Photo Maker: 35×45 mm, Free | VKonvert",
+         desc="Make a passport size photo (35 × 45 mm at 300 dpi) from any picture. Crops from the centre. Free, in your browser, no upload.",
+         h1="Passport size photo",
+         lead="Turn any photo into the standard 35 × 45 mm passport size (413 × 531 pixels at 300 dpi). Nothing is uploaded.",
+         steps=[("Add a photo", "Use a clear, front-facing photo against a plain light background."), ("Keep Passport selected", "VKonvert crops from the centre to the exact size."), ("Save", "Save it; compress it too if the form has a size limit.")],
+         faqs=[("What size is a passport photo?", "In India, the UK, the EU and many other countries it’s 35 × 45 mm. The US uses 2 × 2 inches; pick Square 1080 for that."),
+               ("Does it check the rules for my country?", "No. It makes the right size. Check your country’s rules for the background, face size and expression."),
+               ("The form says the photo must be under 50 KB.", "After saving, open Compress image to 50 KB and add the passport photo there.")],
+         related=["compress-image-to-50kb", "compress-image-to-20kb", "resize-image", "remove-photo-info"]),
+    dict(slug="heic-to-png", tool="convert", target="PNG", name="HEIC to PNG", ex="HEIC→PNG", tile="iPhone photos as lossless PNGs.",
+         title="HEIC to PNG Converter, Free and Private | VKonvert",
+         desc="Convert iPhone HEIC photos to PNG in your browser. Lossless, batch convert, no upload and no sign-up.",
+         h1="HEIC to PNG", lead="Turn iPhone HEIC photos into PNGs that open everywhere, without further quality loss. Nothing is uploaded.",
+         steps=[("Add HEIC photos", "Drop them or tap Choose pictures."), ("Keep PNG selected", "PNG keeps every pixel; pick JPG for smaller files."), ("Save", "Save each PNG or all as a ZIP.")],
+         faqs=[("PNG or JPG for iPhone photos?", "JPG files are much smaller and look the same for photos. PNG is lossless, useful for editing or screenshots."),
+               ("Is it private?", "Yes. Photos are converted on your device and never uploaded.")],
+         related=["heic-to-jpg", "convert-image", "compress-image", "jpg-to-pdf"]),
+    dict(slug="pdf-to-png", tool="pdftojpg", data={"format": "png"}, name="PDF to PNG", ex="PDF→PNG", tile="Every page as a sharp PNG.",
+         title="PDF to PNG: Convert PDF Pages to PNG, Free | VKonvert",
+         desc="Turn each page of a PDF into a sharp PNG at 96, 150 or 300 dpi. Free, in your browser, no upload.",
+         h1="PDF to PNG", lead="Save every page of a PDF as a crisp PNG, best for pages with text, charts and lines.",
+         steps=[("Add a PDF", "Drop it or tap Choose PDFs."), ("Pick the sharpness", "150 dpi for screens, 300 dpi for printing."), ("Save", "Save each page, or all as a ZIP.")],
+         faqs=[("Why PNG instead of JPG?", "PNG keeps text and lines perfectly sharp. JPG makes smaller files, better for photos."),
+               ("Is my PDF uploaded?", "No. Pages are drawn on your device.")],
+         related=["pdf-to-jpg", "split-pdf", "compress-pdf", "jpg-to-pdf"]),
 ]
 BY_SLUG = {p["slug"]: p for p in PAGES}
 TILES = ["convert-image", "compress-image", "resize-image", "remove-photo-info", "jpg-to-pdf", "merge-pdf", "split-pdf",
@@ -243,8 +301,9 @@ FOOTER = f"""<footer class="foot">
 """
 
 
-def machine(tool, target=None):
+def machine(tool, target=None, data=None):
     t = f' data-target="{target}"' if target else ""
+    t += "".join(f' data-{k}="{e(str(v))}"' for k, v in (data or {}).items())
     return (f'<div id="machine" data-tool="{tool}"{t}><noscript><p style="padding:24px">VKonvert needs JavaScript to work on your files '
             f'inside your browser. Or <a href="/download">get the Windows app</a>.</p></noscript></div>')
 
@@ -279,7 +338,7 @@ PRIVACY_BAND = """<div class="band"><div class="wrap">
 </div></div>"""
 
 APP_BAND = f"""<section class="block"><div class="wrap appband">
-  <div class="l"><span class="lbl" style="color:var(--red)">Windows app</span>
+  <div class="l"><span class="lbl" style="color:var(--red-text)">Windows app</span>
     <h2 class="h2">Right-click. Convert. Done.</h2>
     <p class="lead">The same tools on your PC, plus “VKonvert” in the right-click menu, saving as HEIC, AVIF and TIFF, PDF passwords, and light and dark mode.</p>
     <div class="row"><a class="btn-red" href="/download">Download for Windows</a><span class="mono" style="color:var(--muted)">Windows 10 / 11 · free</span></div></div>
@@ -312,7 +371,8 @@ def home():
   <div class="row" style="justify-content:space-between;align-items:flex-end"><h2 class="h2">Eleven tools. One place.</h2><p class="sub2">Every tool works in the Windows app too.</p></div>
   <div class="tiles">{tiles(TILES)}</div>
   <h2 class="h2" style="margin-top:44px;font-size:clamp(24px,2.6vw,30px)">Popular conversions</h2>
-  <div class="related">{"".join(f'<a href="/{s}">{e(BY_SLUG[s]["name"])}</a>' for s in ["heic-to-jpg", "png-to-jpg", "jpg-to-png", "webp-to-jpg", "jpg-to-webp", "jpg-to-pdf", "pdf-to-jpg"])}</div>
+  <div class="related">{"".join(f'<a href="/{s}">{e(BY_SLUG[s]["name"])}</a>' for s in ["heic-to-jpg", "heic-to-png", "png-to-jpg", "jpg-to-png", "webp-to-jpg", "jpg-to-webp", "jpg-to-pdf", "pdf-to-jpg", "pdf-to-png",
+          "compress-image-to-20kb", "compress-image-to-50kb", "compress-image-to-100kb", "compress-image-to-200kb", "passport-size-photo"])}</div>
 </div></section>
 {PRIVACY_BAND}
 {APP_BAND}
@@ -333,7 +393,7 @@ def tool_page(p):
   <h1>{e(p["h1"])}</h1>
   <p>{e(p["lead"])}</p>
 </div></section>
-<section aria-label="{e(p["name"])}"><div class="wrap">{machine(p["tool"], p.get("target"))}</div></section>
+<section aria-label="{e(p["name"])}"><div class="wrap">{machine(p["tool"], p.get("target"), p.get("data"))}</div></section>
 <section class="block"><div class="wrap"><h2 class="h2">How to use {e(p["name"])}</h2><div class="how">{steps}</div></div></section>
 <section class="block"><div class="wrap"><h2 class="h2">Questions</h2>{faq_html(p["faqs"])}</div></section>
 <section class="block"><div class="wrap"><h2 class="h2" style="font-size:clamp(24px,2.6vw,30px)">Related tools</h2><div class="related">{rel}</div></div></section>
@@ -356,7 +416,7 @@ def download():
   <h1>VKonvert for Windows</h1>
   <p>All eleven tools on your PC, plus the right-click menu, saving as HEIC, AVIF and TIFF, PDF passwords, and light and dark mode. Free, works offline.</p>
   <div class="dlcards">
-    <div class="dlcard main"><span class="lbl" style="color:var(--red)">Recommended</span><h2>Installer</h2>
+    <div class="dlcard main"><span class="lbl" style="color:var(--red-text)">Recommended</span><h2>Installer</h2>
       <p>Accept the license, pick a folder and options, done. Adds the Start menu, desktop shortcut and right-click menu. Uninstall any time from Settings › Apps.</p>
       <span class="meta">VKonvert-Setup-{VERSION}.exe · 15.8 MB · no admin needed</span>
       <div><a class="btn-red" href="{SETUP}">Download installer</a></div></div>
